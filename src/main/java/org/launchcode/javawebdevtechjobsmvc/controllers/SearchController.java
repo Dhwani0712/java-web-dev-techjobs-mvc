@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static org.launchcode.javawebdevtechjobsmvc.controllers.ListController.columnChoices;
 
+
 /**
  * Created by LaunchCode
  */
@@ -27,6 +28,10 @@ public class SearchController {
     @PostMapping(value = "results")
     public String displaySearchResults(Model model, String searchType, String searchTerm) {
         ArrayList<Job> jobs;
+        if(searchTerm != "jobs") {
+            model.addAttribute("No results");
+        }
+
         if (searchTerm.isEmpty() || searchTerm.toLowerCase().equals("all")) {
             jobs = JobData.findAll();
         } else {
@@ -34,7 +39,6 @@ public class SearchController {
         }
         model.addAttribute("jobs", jobs);
         model.addAttribute("columns", columnChoices);
-        model.addAttribute("noResult", "No results found.");
         model.addAttribute("title", "Jobs with " + columnChoices.get(searchType) + ": " + searchTerm);
         return "search";
     }
